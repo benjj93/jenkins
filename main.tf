@@ -1,11 +1,19 @@
-provider "aws" {
-    region = "ap-south-1"  
+data "aws_ami" "amazon_linux" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = ""
+    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+  }
 }
 
-resource "aws_instance" "foo" {
-  ami           = "ami-05fa00d4c63e32376" 
-  instance_type = "t2.micro"
+# Create EC2 instance
+resource "aws_instance" "my_ec2" {
+  ami           = data.aws_ami.amazon_linux.id
+  instance_type = "t2.medium"
+
   tags = {
-      Name = "apr23_ak01"
+    Name = "Apr24-ak01"
   }
 }
